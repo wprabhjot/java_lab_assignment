@@ -71,6 +71,7 @@ public class BookStore {
 			Book book = new Book(title, author, ISBN, count);
 			if(books.size() < 10) {
 				books.add(book);
+				System.out.println("Order processed successfully");
 			}
 			else {
 				System.out.println("Total books can't be more than 10");
@@ -80,7 +81,7 @@ public class BookStore {
 	
 	void display() {
 		for(Book book: books) {	
-			System.out.println("Author- "+ book.getAuthor()+ " Title- "+ book.getBookTitle()+ " ISBN- "+ book.getISBN()+ " Quantity- "+ book.getNumOfCopies());
+			book.display();
 		}
 	}
 }
