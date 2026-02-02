@@ -12,8 +12,18 @@ import lombok.NoArgsConstructor;
 @Builder
 public class BookDto {
 
-    private String title;
+	private Integer id;
+	private String title;
     private String author;
-    private double price;
+    private Double price;
+    private String isbn;
+    private String category;
 
+    public BookDto(String title, String author, Double price, String isbn, String category) {
+		this.title = title;
+		this.author = author;
+		this.price = price;
+		this.isbn = isbn;
+		this.category = category;
+	}
 }

@@ -11,6 +11,8 @@ public class BookConverter {
 		bookDto.setTitle(book.getTitle());
 		bookDto.setPrice(book.getPrice());
 		bookDto.setAuthor(book.getAuthor());
+		bookDto.setIsbn(book.getIsbn());
+		bookDto.setCategory(book.getCategory());
 		return bookDto;
 	}
 	
@@ -20,7 +22,8 @@ public class BookConverter {
 	    book.setTitle(bookDto.getTitle());
 	    book.setAuthor(bookDto.getAuthor());
 	    book.setPrice(bookDto.getPrice());
-
+	    book.setIsbn(bookDto.getIsbn());   
+	    book.setCategory(bookDto.getCategory());
 	    return book;
 	}
 }

@@ -10,7 +10,10 @@ import com.app.exceptions.BookNotFoundException;
 import com.app.repository.BookRepository;
 import com.app.util.BookConverter;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class BookServiceImpl implements BookService {
 
     private final BookRepository repo;
@@ -19,34 +22,53 @@ public class BookServiceImpl implements BookService {
         this.repo = repo;
     }
 
-    public Book addBook(BookDto dto) {
-    	return repo.save(BookConverter.convertToBook(dto));
-    }
-    public Book updateBook(Integer id, BookDto dto) throws BookNotFoundException {
-    	Book existingBook = repo.findById(id);
-    	if(existingBook==null) {
-    		throw new BookNotFoundException("Unable to update. Book id: "+ id+ " not found.");
-    	}
-    	existingBook.setAuthor(dto.getAuthor());
-    	existingBook.setPrice(dto.getPrice());
-    	existingBook.setTitle(dto.getTitle());
-    	return repo.save(existingBook);
-    }
-    public Book getBook(Integer id) {
-        Book book = repo.findById(id);
-        if(book == null) {
-            throw new BookNotFoundException("Book id: " + id + " not found");
-        }
-        return book;
-    }
-    public List<Book> getAllBooks() {
-    	return repo.findAll();
-    }
-    public void deleteBook(Integer id) {
-        if(repo.findById(id) == null) {
-            throw new BookNotFoundException("Book id: " + id + " not found");
-        }
-        repo.deleteById(id);
-    }
+	@Override
+	public List<Book> getByAuthor(String author) {
+		return repo.findByAuthor(author);
+	}
+
+	@Override
+	public List<Book> getByCategory(String category) {
+		return repo.findByCategory(category);
+	}
+
+	@Override
+	public Book updateBook(Integer id, BookDto dto) {
+	    Book existingBook = repo.findById(id)
+	            .orElseThrow(() -> new BookNotFoundException("Book not found with id: " + id));
+
+	    existingBook.setTitle(dto.getTitle());
+	    existingBook.setAuthor(dto.getAuthor());
+	    existingBook.setCategory(dto.getCategory());
+	    existingBook.setPrice(dto.getPrice());
+	    existingBook.setIsbn(dto.getIsbn());
+
+	    return repo.save(existingBook);
+	}
+
+
+	@Override
+	public Book getBook(Integer id) {
+		// TODO Auto-generated method stub
+		return repo.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: "+ id));
+	}
+
+	@Override
+	public List<Book> getAllBooks() {
+		// TODO Auto-generated method stub
+		return repo.findAll();
+	}
+
+	@Override
+	public void deleteBook(Integer id) {
+		// TODO Auto-generated method stub
+		repo.deleteById(id);
+	}
+
+
+	@Override
+	public Book addBook(BookDto dto) {
+		return repo.save(BookConverter.convertToBook(dto));
+	}
 
 }

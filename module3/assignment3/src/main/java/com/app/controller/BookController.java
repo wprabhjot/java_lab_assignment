@@ -2,14 +2,8 @@ package com.app.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import com.app.dto.BookDto;
 import com.app.entity.Book;
@@ -19,35 +13,41 @@ import com.app.service.BookService;
 @RequestMapping("/api/books")
 public class BookController {
 
-    private final BookService service;
-
-    public BookController(BookService service) {
-        this.service = service;
-    }
+    @Autowired
+    private BookService bookService;
 
     @PostMapping
-    public Book add(@RequestBody BookDto dto) { 
-    	return service.addBook(dto);
-    }
-
-    @GetMapping("/{id}")
-    public Book get(@PathVariable Integer id) {
-    	return service.getBook(id);
-    }
-
-    @GetMapping
-    public List<Book> getAll() { 
-    	return service.getAllBooks();
+    public Book addBook(@RequestBody BookDto dto) {
+        return bookService.addBook(dto);
     }
 
     @PutMapping("/{id}")
-    public Book update(@PathVariable Integer id, @RequestBody BookDto dto) {
-    	return service.updateBook(id, dto);
+    public Book updateBook(@PathVariable Integer id, @RequestBody BookDto dto) {
+        return bookService.updateBook(id, dto);
+    }
+
+    @GetMapping("/{id}")
+    public Book getBook(@PathVariable Integer id) {
+        return bookService.getBook(id);
+    }
+
+    @GetMapping
+    public List<Book> getAllBooks() {
+        return bookService.getAllBooks();
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
-    	service.deleteBook(id);
+    public void deleteBook(@PathVariable Integer id) {
+        bookService.deleteBook(id);
     }
 
+    @GetMapping("/author/{author}")
+    public List<Book> getByAuthor(@PathVariable String author) {
+        return bookService.getByAuthor(author);
+    }
+
+    @GetMapping("/category/{category}")
+    public List<Book> getByCategory(@PathVariable String category) {
+        return bookService.getByCategory(category);
+    }
 }
